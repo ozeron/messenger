@@ -28,12 +28,23 @@ class CommendPublicPosts:
     def commentPost(self,post_id,text_q):
         self.api.wall.addComment(owner_id=-self.public_id,post_id=post_id,text=text_q)
 class GetTopNGroupsByLocation: #will be finalized!!!!
-    def __init__(self,vkapi):
+    def __init__(self,vkapi,city,n,search_text):
         self.api = vkapi
-    def getGroups(self,city,n):
+        self.cityName=city
+        self.N=n
+        self.searchText=search_text
+    def getGroups(self):
         countries = self.api.database.getCountries(code="UA")
-        print(countries['items'][0]['id'])
-
+        country=countries['items'][0]
+        cities = self.api.database.getCities(country_id=country['id'],q=self.cityName)
+        city=cities['items'][0]
+        groups=self.api.groups.search(q=self.searchText,city_id=city['id'])
+        returnedGroups=[]
+        if groups['count']<self.N:
+            self.N=groups['count']
+        for i in range(0,self.N+1):
+            returnedGroups.append(groups['items'][i])
+        return returnedGroups
 
 
 
@@ -41,21 +52,8 @@ class GetTopNGroupsByLocation: #will be finalized!!!!
 def init(json):
   for entry in json:
     vkapi = vk.API(APP_ID, entry["login"], entry["password"])
-    vkapi.access_token = ""
-    #a= CommendPublicPosts(vkapi,90318286).commendEveryPost("comment")
-    #a= CommendPublicPosts(vkapi,90318286)
-    #for i in range(1,50):
-       # a.commentPost(2,"Morning test_comment for capthca #"+str(i))
-       # time.sleep(1)
-    a=GetTopNGroupsByLocation(vkapi)
-    a.getGroups('Kiev', 1)
-    #vkapi.wall.addComment(owner_id=-90318286,post_id=1,text="test comment")
-    #vkapi.wall.post(message="Hello")
-    #id = vkapi("users.get")[0]['id']
-    #friendlist = FriendsList(vkapi, id).build_list()
-    #for friend in friendlist:
-        #FriendsList(vkapi,friend).build_list()
-        #time.sleep(1)
+    vkapi.access_token = entry["access_token"]
+
 
 
 
