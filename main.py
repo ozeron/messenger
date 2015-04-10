@@ -4,58 +4,47 @@ import vk, sys, json, time
 APP_ID = '4841859'
 
 # TODO: add quequ adding
-class FriendsList:
-  def __init__(self, vkapi, id):
-    self.api = vkapi
-    self.id = id
-  def build_list(self,id = None):
-    if id == None:
-      id = self.id
-    friends = self.api('friends.get', user_id = self.id)['items']
-    print(friends)
-    return friends
-class CommentPublicPosts:
-    def __init__(self, vkapi, public_id,interval=1):
+
+
+class VkMessenger:
+    def __init__(self, vkapi):
         self.api = vkapi
-        self.public_id = public_id
-        self.interval = interval
-    def commentEveryPost(self,text_q):
-        PostsList= self.api.wall.get(owner_id=-self.public_id,extended=1)
+
+    def get_friends_by_id(self, userid=0):
+        if userid != 0:
+            friends = self.api('friends.get', user_id=userid)['items']
+            return friends
+
+    def comment_every_post(self, public_id, message, interval=1):
+        posts_list = self.api.wall.get(owner_id=-self.public_id, extended=1)
         time.sleep(1)
-        for i in range(1,len(PostsList['items'])+1):
-            self.api.wall.addComment(owner_id=-self.public_id,post_id=i,text=text_q)
-            time.sleep(self.interval)
+        for i in range(1, len(posts_list['items']) + 1):
+            self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message)
+            time.sleep(interval)
         return
-    def commentPost(self,post_id,text_q):
-        self.api.wall.addComment(owner_id=-self.public_id,post_id=post_id,text=text_q)
-class GetTopNGroupsByLocation:
-    def __init__(self,vkapi,city,n,search_text):
-        self.api = vkapi
-        self.cityName=city
-        self.N=n
-        self.searchText=search_text
-    def getGroups(self):
+
+    def comment_post(self, public_id, post_id, message):
+        self.api.wall.addComment(owner_id=-public_id, post_id=post_id, text=message)
+
+    def get_top_n_groups_by_location(self, city, n, search_text):
+        count_groups = n
         countries = self.api.database.getCountries(code="UA")
-        country=countries['items'][0]
-        cities = self.api.database.getCities(country_id=country['id'],q=self.cityName)
-        city=cities['items'][0]
-        groups=self.api.groups.search(q=self.searchText,city_id=city['id'])
-        returnedGroups=[]
-        if groups['count']<self.N:
-            self.N=groups['count']
-        for i in range(0,self.N+1):
-            returnedGroups.append(groups['items'][i])
-        return returnedGroups
-
-
+        country = countries['items'][0]
+        cities = self.api.database.getCities(country_id=country['id'], q=city)
+        city = cities['items'][0]
+        groups = self.api.groups.search(q=search_text, city_id=city['id'])
+        rgroups = []
+        if groups['count'] < count_groups:
+            count_groups = groups['count']
+        for i in range(0, count_groups):
+            rgroups.append(groups['items'][i])
+        return rgroups
 
 
 def init(json):
   for entry in json:
     vkapi = vk.API(APP_ID, entry["login"], entry["password"])
     vkapi.access_token = entry["access_token"]
-
-
 
 
 
