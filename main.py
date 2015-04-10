@@ -14,20 +14,21 @@ class FriendsList:
     friends = self.api('friends.get', user_id = self.id)['items']
     print(friends)
     return friends
-class CommendPublicPosts:
-    def __init__(self, vkapi, public_id):
+class CommentPublicPosts:
+    def __init__(self, vkapi, public_id,interval=1):
         self.api = vkapi
         self.public_id = public_id
+        self.interval = interval
     def commentEveryPost(self,text_q):
         PostsList= self.api.wall.get(owner_id=-self.public_id,extended=1)
         time.sleep(1)
         for i in range(1,len(PostsList['items'])+1):
-            self.api.wall.addComment(owner_id=-self.public_id,post_id=i,text=text_q+"#"+str(i))
-            time.sleep(1)
+            self.api.wall.addComment(owner_id=-self.public_id,post_id=i,text=text_q)
+            time.sleep(self.interval)
         return
     def commentPost(self,post_id,text_q):
         self.api.wall.addComment(owner_id=-self.public_id,post_id=post_id,text=text_q)
-class GetTopNGroupsByLocation: #will be finalized!!!!
+class GetTopNGroupsByLocation:
     def __init__(self,vkapi,city,n,search_text):
         self.api = vkapi
         self.cityName=city
@@ -53,6 +54,7 @@ def init(json):
   for entry in json:
     vkapi = vk.API(APP_ID, entry["login"], entry["password"])
     vkapi.access_token = entry["access_token"]
+
 
 
 
