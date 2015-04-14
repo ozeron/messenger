@@ -2,6 +2,12 @@ import sys, os, json
 from messenger.client import VkClient
 from messenger import logger
 
+from PyQt5.QtCore import *
+from PyQt5.QtWidgets import *
+
+from main_dialog import MainDialog
+
+
 # TODO: add quequ adding
 # Token reqeust https://oauth.vk.com/authorize?client_id=4841859&scope=6274559&redirect_uri=https://oauth.vk.com/blank.html&%20display=page&v=5.29&%20response_type=token
 
@@ -20,4 +26,9 @@ if __name__ == '__main__':
     path = sys.argv[1]
   text = open(CREDENTIALS_PATH, 'r').read()
   json = json.loads(text)
-  init(json)
+
+  a = QApplication([])
+  main_dialog = MainDialog()
+  main_dialog.show()
+  a.exec()
+  #init(json)
