@@ -1,11 +1,13 @@
-import sys, os, json
-from messenger.client import VkClient
-from messenger import logger
+import sys
+import os
+import json
 
-from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-from main_dialog import MainDialog
+from messenger.client import VkClient
+from messenger import logger
+from controllers.main_dialog import MainDialog
+
 
 
 # TODO: add quequ adding

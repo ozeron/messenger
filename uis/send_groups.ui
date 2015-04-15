@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MainDialog</class>
- <widget class="QWidget" name="MainDialog">
+ <class>SendGroupsDialog</class>
+ <widget class="QWidget" name="SendGroupsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainDialog</string>
+   <string>Send messages in groups</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0">
    <item>
@@ -26,13 +26,6 @@
       </size>
      </property>
     </spacer>
-   </item>
-   <item>
-    <widget class="QPushButton" name="btnTest">
-     <property name="text">
-      <string>Test</string>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QLabel" name="lblMessage">
@@ -88,7 +81,7 @@
   <connection>
    <sender>btnOk</sender>
    <signal>clicked()</signal>
-   <receiver>MainDialog</receiver>
+   <receiver>SendGroupsDialog</receiver>
    <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
