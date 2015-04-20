@@ -23,8 +23,8 @@ class VkMessenger:
             friends = self.api('friends.get', user_id=userid)['items']
             return friends
 
-    def comment_every_post(self, public_id, message, interval=1):
-        posts_list = self.api.wall.get(owner_id=-self.public_id, extended=1)
+    def comment_every_post(self, public_id, message, interval=15):
+        posts_list = self.api.wall.get(owner_id=-public_id, extended=1)
         time.sleep(1)
         for i in range(1, len(posts_list['items']) + 1):
             self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message)
