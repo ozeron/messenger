@@ -26,7 +26,7 @@ class VkMessenger:
     def comment_every_post(self, public_id, message, interval=15):
         posts_list = self.api.wall.get(owner_id=-public_id, extended=1)
         time.sleep(1)
-        for i in range(1, len(posts_list['items']) + 1):
+        for i in reversed(range(1, len(posts_list['items']) + 1)):
             self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message)
             time.sleep(interval)
         return

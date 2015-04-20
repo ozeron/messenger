@@ -31,6 +31,7 @@ def get_client(json):
 def start_app_with(client):
     a = QApplication([])
     main_dialog = MainDialog(client)
+    logger.debug("Created MainDialog")
     main_dialog.show()
     a.exec()
 

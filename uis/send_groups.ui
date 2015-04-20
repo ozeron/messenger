@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Send messages in groups</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
@@ -41,64 +41,94 @@
      <widget class="QLineEdit" name="editGroupIds">
       <property name="geometry">
        <rect>
-        <x>110</x>
-        <y>17</y>
-        <width>113</width>
+        <x>150</x>
+        <y>10</y>
+        <width>241</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="text">
+       <string>90318286</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblGroupIds">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>20</y>
+        <width>131</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enter Target group id</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblMessage">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>111</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enter message</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editMessage">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>40</y>
+        <width>241</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Hello from GUI</string>
       </property>
      </widget>
      <widget class="QLabel" name="label">
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>20</y>
+        <y>70</y>
         <width>91</width>
         <height>16</height>
        </rect>
       </property>
       <property name="text">
-       <string>EnterGroupIds</string>
+       <string>Enter time_out</string>
       </property>
      </widget>
-     <widget class="QProgressBar" name="progressSending">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
+     <widget class="QLineEdit" name="editTimeOut">
       <property name="geometry">
        <rect>
-        <x>10</x>
+        <x>150</x>
         <y>70</y>
-        <width>381</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>24</number>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnSend">
-      <property name="geometry">
-       <rect>
-        <x>240</x>
-        <y>14</y>
-        <width>115</width>
-        <height>32</height>
+        <width>241</width>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
-       <string>StartSending</string>
+       <string>15</string>
       </property>
      </widget>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="lblMessage">
+    <widget class="QPushButton" name="btnSend">
+     <property name="text">
+      <string>StartSending</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblStatus">
      <property name="text">
       <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
      </property>
     </widget>
    </item>
