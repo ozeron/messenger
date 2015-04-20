@@ -7,8 +7,9 @@ from controllers.select_groups import SelectGroupsDialog
 
 
 class MainDialog(QWidget):
-  def __init__(self):
+  def __init__(self, vk_client):
     QWidget.__init__(self)
+    self.vk_client = vk_client
     self.ui = loadUi('uis/main_dialog.ui', self)
     self.ui.btnSelectGroups.clicked.connect(self.__on_select_groups_btn_clicked)
     self.ui.btnSengGroups.clicked.connect(self.__on_seng_groups_btn_clicked)
@@ -18,5 +19,5 @@ class MainDialog(QWidget):
     dialog.show()
 
   def __on_seng_groups_btn_clicked(self):
-    dialog = SendGroupsDialog()
+    dialog = SendGroupsDialog(self.vk_client)
     dialog.show()

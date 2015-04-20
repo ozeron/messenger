@@ -15,22 +15,26 @@ from controllers.main_dialog import MainDialog
 
 logger = logger.get(__name__)
 
-def init(json):
+def start():
+    if len(sys.argv) > 1:
+      path = sys.argv[1]
+    text = open(CREDENTIALS_PATH, 'r').read()
+    client = get_client(json.loads(text))
+    start_app_with(client)
+
+def get_client(json):
     entry = json[0]
     logger.info("Loaded credentials building VkClient with {0}".format(str(entry)))
     client = VkClient(entry)
     return client
 
+def start_app_with(client):
+    a = QApplication([])
+    main_dialog = MainDialog(client)
+    main_dialog.show()
+    a.exec()
+
 CREDENTIALS_PATH = os.path.join(os.path.dirname(__file__), 'config/credentials.json')
 
 if __name__ == '__main__':
-  if len(sys.argv) > 1:
-    path = sys.argv[1]
-  text = open(CREDENTIALS_PATH, 'r').read()
-  json = json.loads(text)
-
-  a = QApplication([])
-  main_dialog = MainDialog()
-  main_dialog.show()
-  a.exec()
-  #init(json)
+  start()
