@@ -19,9 +19,10 @@ class VkMessenger:
         return vkapi
 
     def get_friends_by_id(self, userid=0):
-        if userid != 0:
-            friends = self.api('friends.get', user_id=userid)['items']
-            return friends
+        if userid == 0:
+            userid = int(self.api.users.get()[0]['id'])
+        friends = self.api('friends.get', user_id=userid)['items']
+        return friends
 
     def comment_every_post(self, public_id, message, interval=15):
         posts_list = self.api.wall.get(owner_id=-public_id, extended=1)
@@ -42,8 +43,8 @@ class VkMessenger:
         city = cities['items'][0]
         groups = self.api.groups.search(q=search_text, city_id=city['id'])
         rgroups = []
-        if groups['count'] < count_groups:
-            count_groups = groups['count']
+        if int(groups['count']) < count_groups:
+            count_groups = int(groups['count'])
         for i in range(0, count_groups):
             rgroups.append(groups['items'][i])
         return rgroups

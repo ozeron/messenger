@@ -16,7 +16,7 @@ class MainDialog(QWidget):
     self.ui.btnSengGroups.clicked.connect(self.__on_seng_groups_btn_clicked)
 
   def __on_select_groups_btn_clicked(self):
-    dialog = SelectGroupsDialog()
+    dialog = SelectGroupsDialog(self.vk_client)
     dialog.show()
 
   def __on_seng_groups_btn_clicked(self):
