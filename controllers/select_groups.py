@@ -1,7 +1,9 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem
 from PyQt5.QtCore import QDateTime
 from PyQt5.uic import loadUi
+
 from messenger import logger
+
 
 class SelectGroupsDialog(QWidget):
   def __init__(self, vk_client):
@@ -17,10 +19,15 @@ class SelectGroupsDialog(QWidget):
     quantity = int(self.ui.editQuanity.text())
     groups = self.vk_client.vk_messenger.get_top_n_groups_by_location(city, quantity, search_query)
     self.logger.debug('Searching groups top %s in %s with search query %s ', quantity, city, search_query)
-    result = "Result:\n"
-    i = 1
-    for group in groups:
-        result += str(i)+'. '+group['name']+'\t'+"id - "+str(group['id'])+'\n'
-        self.ui.editResult.setText(result)
-        i += 1
+
+    self.ui.vwvGroups.setColumnCount(2)
+    self.ui.vwvGroups.setHorizontalHeaderLabels(['Name', 'ID'])
+    self.ui.vwvGroups.horizontalHeader().setStretchLastSection(True)
+    self.ui.vwvGroups.horizontalHeader().resizeSection(0, 300)
+
+    for i, group in enumerate(groups):
+      self.ui.vwvGroups.setRowCount(i + 1)
+      self.ui.vwvGroups.setItem(i, 0, QTableWidgetItem(group['name']))
+      self.ui.vwvGroups.setItem(i, 1, QTableWidgetItem(str(group['id'])))
+
     self.logger.debug('Succesfully searched!')

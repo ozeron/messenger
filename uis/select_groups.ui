@@ -6,27 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>436</width>
-    <height>425</height>
+    <width>501</width>
+    <height>539</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Select groups by location filter</string>
+   <string>Find groups by region</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
-   <item>
-    <spacer name="verticalSpacer_2">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="minimumSize">
@@ -38,108 +25,54 @@
      <property name="title">
       <string/>
      </property>
-     <widget class="QLabel" name="lblCity">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>59</width>
-        <height>15</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>City</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblSearchQuery">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Search Query</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="editCity">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>30</y>
-        <width>113</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Kiev</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="editQuery">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>60</y>
-        <width>113</width>
-        <height>23</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="btnSearch">
-      <property name="geometry">
-       <rect>
-        <x>320</x>
-        <y>100</y>
-        <width>80</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Search</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="lblResultQuanity">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>100</y>
-        <width>101</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Result quanity</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="editQuanity">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>100</y>
-        <width>113</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>5</string>
-      </property>
-     </widget>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="editQuanity">
+        <property name="text">
+         <string>10</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="lblResultQuanity">
+        <property name="text">
+         <string>Result quantity</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="editQuery">
+        <property name="text">
+         <string>Майдан</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lblSearchQuery">
+        <property name="text">
+         <string>Search Query</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lblCity">
+        <property name="text">
+         <string>City</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="editCity">
+        <property name="text">
+         <string>Киев</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="lblMessage">
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QTextEdit" name="editResult"/>
+    <widget class="QTableWidget" name="vwvGroups"/>
    </item>
    <item>
     <spacer name="verticalSpacer">
@@ -149,7 +82,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>140</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -170,9 +103,9 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btnExit">
+      <widget class="QPushButton" name="btnSearch">
        <property name="text">
-        <string>Exit</string>
+        <string>Search</string>
        </property>
       </widget>
      </item>
@@ -181,22 +114,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>btnExit</sender>
-   <signal>clicked()</signal>
-   <receiver>SelectGroupsDialog</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>393</x>
-     <y>396</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>217</x>
-     <y>212</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
