@@ -24,16 +24,18 @@ class VkMessenger:
         friends = self.api('friends.get', user_id=userid)['items']
         return friends
 
-    def comment_every_post(self, public_id, message, interval=15):
+    def comment_every_post(self, public_id, message, interval=15, photo=None):
         posts_list = self.api.wall.get(owner_id=-public_id, extended=1)
         time.sleep(1)
         for i in reversed(range(1, len(posts_list['items']) + 1)):
-            self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message)
+            self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message, attachments=photo)
             time.sleep(interval)
-        return
 
     def comment_post(self, public_id, post_id, message):
         self.api.wall.addComment(owner_id=-public_id, post_id=post_id, text=message)
+
+    def get_pictures(self, album):
+        return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
 
     def get_top_n_groups_by_location(self, city, n, search_text):
         count_groups = n

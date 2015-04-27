@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem
 from PyQt5.QtCore import QDateTime
 from PyQt5.uic import loadUi
 
@@ -11,12 +11,30 @@ class SendGroupsDialog(QWidget):
     self.vk_client = client
     self.ui = loadUi('uis/send_groups.ui', self)
     self.ui.btnSend.clicked.connect(self.__on_btn_send_clicked)
+    self.ui.btnLoadPhotos.clicked.connect(self.__on_btnLoadPhotos_clicked)
+
+
+
+  def __on_btnLoadPhotos_clicked(self):
+    self.ui.tblPthotos.setColumnCount(2)
+    self.ui.tblPthotos.setHorizontalHeaderLabels(['Text', 'ID'])
+    self.ui.tblPthotos.horizontalHeader().setStretchLastSection(True)
+    self.ui.tblPthotos.horizontalHeader().resizeSection(0, 200)
+
+    pictures = self.vk_client.get_pictures(self.ui.editAlbumID.text())['items']
+
+    for i, item in enumerate(pictures):
+        self.ui.tblPthotos.setRowCount(i + 1)
+        self.ui.tblPthotos.setItem(i, 0, QTableWidgetItem(item['text']))
+        self.ui.tblPthotos.setItem(i, 1, QTableWidgetItem('photo{0}_{1}'.format(str(item['owner_id']), str(item['id']))))
 
   def __on_btn_send_clicked(self):
     group_id = int(self.ui.editGroupIds.text())
     message = self.ui.editMessage.text()
     time_out = int(self.ui.editTimeOut.text())
     self.logger.debug('Sending messages to %s msg: %s, with time out: %s sec', group_id, message, time_out)
-    self.vk_client.comment_every_post(group_id, message, time_out)
+    picture = self.ui.editPhotoID.text()
+    self.vk_client.comment_every_post(group_id, message, time_out, picture)
+
     self.logger.debug('Succesfully sent messages to target group!')
-    self.ui.lblStatus.setText("Sent message to target group" + '\n'+ message)
+    self.ui.lblStatus.setText("Sent message to target group" + '\n' + message)

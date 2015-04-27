@@ -6,23 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>436</width>
-    <height>425</height>
+    <width>447</width>
+    <height>518</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Send messages in groups</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
@@ -32,7 +35,7 @@
      <property name="minimumSize">
       <size>
        <width>100</width>
-       <height>100</height>
+       <height>250</height>
       </size>
      </property>
      <property name="title">
@@ -116,6 +119,88 @@
        <string>15</string>
       </property>
      </widget>
+     <widget class="QLabel" name="lblPhoto">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>100</y>
+        <width>59</width>
+        <height>15</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Photo:</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblAlbum">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>130</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enter Album ID</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editAlbumID">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>120</y>
+        <width>241</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="btnLoadPhotos">
+      <property name="geometry">
+       <rect>
+        <x>310</x>
+        <y>150</y>
+        <width>80</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Load Photos</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lblPhotoID">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>180</y>
+        <width>101</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Enter Photo ID</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="editPhotoID">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>180</y>
+        <width>241</width>
+        <height>23</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTableWidget" name="tblPthotos"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="lblStatus">
+     <property name="text">
+      <string/>
+     </property>
     </widget>
    </item>
    <item>
@@ -126,21 +211,17 @@
     </widget>
    </item>
    <item>
-    <widget class="QLabel" name="lblStatus">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>140</height>
+       <height>20</height>
       </size>
      </property>
     </spacer>
