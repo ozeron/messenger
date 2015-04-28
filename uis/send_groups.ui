@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>447</width>
-    <height>518</height>
+    <height>541</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,7 +51,7 @@
        </rect>
       </property>
       <property name="text">
-       <string>90318286</string>
+       <string/>
       </property>
      </widget>
      <widget class="QLabel" name="lblGroupIds">
