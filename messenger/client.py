@@ -22,3 +22,6 @@ class VkClient:
     def get_pictures(self, album):
         return self.vk_messenger.get_pictures(album)
 
+    def get_group_name(self, g_id):
+        return self.vk_messenger.get_group_name(g_id)
+

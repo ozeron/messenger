@@ -11,7 +11,6 @@ REGEX = '(?:\|?id:)?\s*(\d+)'
 def get_groups():
     return config.get_key("groups")
 
-
 def get_group_names():
     groups = get_groups()
     l =  list(map(get_group_name, groups))
@@ -29,7 +28,7 @@ def get_group_id(st):
 
 def make_group(id,name):
     return {
-        "id": int(id),
+        "id": str(id),
         "name": str(name)
     }
 
@@ -39,7 +38,8 @@ def already_in_favourites(id, name):
     logger.debug("Checking if group{'id':%s, 'name':'%s'} is in %s" % (str(id), str(name), str(groups)))
     return g in groups
 
-def remove_from_favourites(id,name):
+def remove_from_favourites(id,name=""):
+    logger.debug("Trying to delete %s with id: %s" % (name, id))
     g = make_group(id, name)
     groups = get_groups()
     if g in groups:

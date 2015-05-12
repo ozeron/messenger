@@ -57,3 +57,4 @@ target/
 # vim
 *.swp
 config/credentials.json
+config/config.json

@@ -37,6 +37,23 @@ class VkMessenger:
     def get_pictures(self, album):
         return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
 
+    def find_group_by_id(self,g_id):
+        self.logger.debug("Trying to get groupById: %s" % g_id)
+        return self.api.groups.getById(group_ids=[g_id])
+
+    def group_exists(self, g_id):
+        groups = self.find_group_by_id(g_id)
+        if isinstance(groups, dict):
+            return False, None
+        else:
+            return True, groups[0]
+
+    def get_group_name(self, group_id):
+        status, group = self.group_exists(group_id)
+        if status and "name" in group.keys():
+            return group["name"]
+        return ""
+
     def get_top_n_groups_by_location(self, city, n, search_text):
         count_groups = n
         countries = self.api.database.getCountries(code="UA")

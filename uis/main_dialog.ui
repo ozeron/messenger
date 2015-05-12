@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>MainDialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0">
    <item>
     <spacer name="verticalSpacer_2">
      <property name="orientation">
@@ -31,6 +31,13 @@
     <widget class="QPushButton" name="btnSelectGroups">
      <property name="text">
       <string>Select Groups by location</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnAddGroups">
+     <property name="text">
+      <string>Manage Favourite Groups</string>
      </property>
     </widget>
    </item>
