@@ -11,8 +11,10 @@ class VkMessenger:
         app_id = dict['app_id']
         login = dict['login']
         passw = dict['pass']
+        token = dict['token']
+	
         self.logger.debug("Creating vkapi instance")
-        vkapi = vk.API(app_id, login, passw)
+        vkapi = vk.API(app_id, login, passw, token)
         self.logger.debug('Created vkapi instance setting token')
         vkapi.access_token = dict["token"]
         self.logger.debug('Token set!')
