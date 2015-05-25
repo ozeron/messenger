@@ -1,5 +1,7 @@
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem
-from PyQt5.QtWidgets import QCompleter
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCompleter, QListView, QListWidgetItem
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
+from PyQt5.QtCore import QUrl, QSize
 from PyQt5.uic import loadUi
 
 from messenger import logger
@@ -14,9 +16,24 @@ class SendGroupsDialog(QWidget):
         self.ui = loadUi('uis/send_groups.ui', self)
         self.ui.btnSend.clicked.connect(self.__on_btn_send_clicked)
         self.ui.btnLoadPhotos.clicked.connect(self.__on_btnLoadPhotos_clicked)
-        self.ui.tblPthotos.cellClicked.connect(self.slotItemClicked)
         completer = QCompleter(groups_manager.get_group_names(), self)
         self.ui.editGroupIds.setCompleter(completer)
+        self.ui.lstPhotos.setViewMode(QListView.IconMode)
+        self.ui.lstPhotos.setGridSize(QSize(200, 200))
+        self.ui.lstPhotos.setIconSize(QSize(150, 150))
+        self.ui.lstPhotos.setFlow(QListView.LeftToRight)
+        self.ui.lstPhotos.setSelectionMode(QListView.MultiSelection)
+        
+        self.__networkManager = QNetworkAccessManager()
+        self.__networkManager.finished.connect(self.__process_network_response)
+        self.__items_dict = {}
+
+
+    def __process_network_response(self, reply):
+        list_item = self.__items_dict[reply]
+        pixmap = QPixmap()
+        pixmap.loadFromData(reply.readAll(), "jpg")
+        list_item.setIcon(QIcon(pixmap))
 
 
     def slotItemClicked(self):
@@ -30,29 +47,36 @@ class SendGroupsDialog(QWidget):
 
 
     def __on_btnLoadPhotos_clicked(self):
-        self.ui.tblPthotos.setColumnCount(2)
-        self.ui.tblPthotos.setHorizontalHeaderLabels(['Text', 'ID'])
-        self.ui.tblPthotos.horizontalHeader().setStretchLastSection(True)
-        self.ui.tblPthotos.horizontalHeader().resizeSection(0, 200)
-
         pictures = self.vk_client.get_pictures(self.ui.editAlbumID.text())['items']
 
+        print(pictures)
+
         for i, item in enumerate(pictures):
-            self.ui.tblPthotos.setRowCount(i + 1)
-            self.ui.tblPthotos.setItem(i, 0, QTableWidgetItem(item['text']))
-            self.ui.tblPthotos.setItem(i, 1,
-                                       QTableWidgetItem('photo{0}_{1}'.format(str(item['owner_id']), str(item['id']))))
+            url = QUrl(item['photo_604'])
+            list_item = QListWidgetItem(item['text'])
+            list_item.photo = item
+            reply = self.__networkManager.get(QNetworkRequest(url))
+            self.__items_dict[reply] = list_item
+            self.ui.lstPhotos.addItem(list_item)
+
 
     def __on_btn_send_clicked(self):
         group_id = int(self._get_group_id(self.ui.editGroupIds.text()))
         message = self.ui.editMessage.text()
         time_out = int(self.ui.editTimeOut.text())
+
+        photos = []
+
+        for list_item in self.ui.lstPhotos.selectedItems():
+            photos.append('photo{0}_{1}'.format(list_item.photo['owner_id'], list_item.photo['id']))
+
+
         self.logger.debug('Sending messages to %s msg: %s, with time out: %s sec', group_id, message, time_out)
-        picture = self.ui.editPhotoID.text()
-        self.vk_client.comment_every_post(group_id, message, time_out, picture)
+        self.vk_client.comment_every_post(group_id, message, time_out, ','.join(photos))
 
         self.logger.debug('Succesfully sent messages to target group!')
         self.ui.lblStatus.setText("Sent message to target group" + '\n' + message)
+
 
     def _get_group_id(self, str):
         return groups_manager.get_group_id(str)

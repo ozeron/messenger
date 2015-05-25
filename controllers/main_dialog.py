@@ -1,4 +1,5 @@
 from PyQt5.QtWidgets import QWidget
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import QDateTime
 from PyQt5.uic import loadUi
 
@@ -17,6 +18,7 @@ class MainDialog(QWidget):
     self.ui.btnSengGroups.clicked.connect(self.__on_seng_groups_btn_clicked)
     self.ui.btnAddGroups.clicked.connect(self.__on_add_groups_btn_clicked)
 
+    
   def __on_select_groups_btn_clicked(self):
     dialog = SelectGroupsDialog(self.vk_client)
     dialog.show()
