@@ -11,7 +11,7 @@ from controllers.main_dialog import MainDialog
 
 
 # TODO: add quequ adding
-# Token reqeust https://oauth.vk.com/authorize?client_id=4841859&scope=266240&redirect_uri=https://oauth.vk.com/blank.html&%20display=page&v=5.30&%20response_type=token
+# Token reqeust https://oauth.vk.com/authorize?client_id=4841859&scope=266240&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.33&response_type=token
 
 logger = logger.get(__name__)
 
