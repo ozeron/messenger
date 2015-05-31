@@ -1,6 +1,8 @@
 from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCompleter, QListView, QListWidgetItem
+from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
+from PyQt5 import QtCore
 from PyQt5.QtCore import QUrl, QSize
 from PyQt5.uic import loadUi
 
@@ -16,18 +18,24 @@ class SendGroupsDialog(QWidget):
         self.ui = loadUi('uis/send_groups.ui', self)
         self.ui.btnSend.clicked.connect(self.__on_btn_send_clicked)
         self.ui.btnLoadPhotos.clicked.connect(self.__on_btnLoadPhotos_clicked)
-        completer = QCompleter(groups_manager.get_group_names(), self)
-        self.ui.editGroupIds.setCompleter(completer)
         self.ui.lstPhotos.setViewMode(QListView.IconMode)
         self.ui.lstPhotos.setGridSize(QSize(200, 200))
         self.ui.lstPhotos.setIconSize(QSize(150, 150))
         self.ui.lstPhotos.setFlow(QListView.LeftToRight)
         self.ui.lstPhotos.setSelectionMode(QListView.MultiSelection)
-        
+        self.model = QStandardItemModel(self.ui.list)
+        self.__show_favourites()
         self.__networkManager = QNetworkAccessManager()
         self.__networkManager.finished.connect(self.__process_network_response)
         self.__items_dict = {}
 
+    def __show_favourites(self):
+        names = groups_manager.get_group_names()
+        for name in names:
+            item = QStandardItem(name)
+            item.setCheckable(True)
+            self.model.appendRow(item)
+        self.ui.list.setModel(self.model)
 
     def __process_network_response(self, reply):
         list_item = self.__items_dict[reply]
@@ -59,9 +67,17 @@ class SendGroupsDialog(QWidget):
             self.__items_dict[reply] = list_item
             self.ui.lstPhotos.addItem(list_item)
 
+    def __get_selected_groups(self):
+        names = []
+        model = self.ui.list.model()
+        for row in range(model.rowCount()):
+            item = model.item(row)
+            if item.checkState() == QtCore.Qt.Checked:
+                names.append(item.text())
+        return names
 
-    def __on_btn_send_clicked(self):
-        group_id = int(self._get_group_id(self.ui.editGroupIds.text()))
+    def __send_over_group(self,name):
+        group_id = int(groups_manager.get_group_id(name))
         message = self.ui.editMessage.text()
         time_out = int(self.ui.editTimeOut.text())
 
@@ -77,6 +93,8 @@ class SendGroupsDialog(QWidget):
         self.logger.debug('Succesfully sent messages to target group!')
         self.ui.lblStatus.setText("Sent message to target group" + '\n' + message)
 
-
-    def _get_group_id(self, str):
-        return groups_manager.get_group_id(str)
+    def __on_btn_send_clicked(self):
+        # FIXME
+        names = self.__get_selected_groups()
+        for name in names:
+            self.__send_over_group(name)
