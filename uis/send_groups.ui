@@ -95,16 +95,16 @@
     <widget class="QListWidget" name="lstPhotos"/>
    </item>
    <item>
-    <widget class="QLabel" name="lblStatus">
+    <widget class="QPushButton" name="btnSend">
      <property name="text">
-      <string/>
+      <string>StartSending</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="btnSend">
+    <widget class="QLabel" name="lblStatus">
      <property name="text">
-      <string>StartSending</string>
+      <string/>
      </property>
     </widget>
    </item>

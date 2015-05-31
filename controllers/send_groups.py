@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCompleter, QListView, QListWidgetItem
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCompleter, QListView, QListWidgetItem,QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
@@ -35,6 +35,7 @@ class SendGroupsDialog(QWidget):
             item = QStandardItem(name)
             item.setCheckable(True)
             self.model.appendRow(item)
+        self.model.item(0).setCheckState(QtCore.Qt.Checked)
         self.ui.list.setModel(self.model)
 
     def __process_network_response(self, reply):
@@ -79,7 +80,17 @@ class SendGroupsDialog(QWidget):
     def __send_over_group(self,name):
         group_id = int(groups_manager.get_group_id(name))
         message = self.ui.editMessage.text()
-        time_out = int(self.ui.editTimeOut.text())
+        if len(message) == 0:
+            self._display_error("Select Groups to send!")
+            return
+        try:
+            time_out = int(self.ui.editTimeOut.text())
+        except:
+            self._display_error("TimeOut must be a positive int!")
+            return
+        if time_out < 0:
+            self._display_error("TimeOut must be a positive int!")
+            return
 
         photos = []
 
@@ -94,7 +105,20 @@ class SendGroupsDialog(QWidget):
         self.ui.lblStatus.setText("Sent message to target group" + '\n' + message)
 
     def __on_btn_send_clicked(self):
-        # FIXME
-        names = self.__get_selected_groups()
-        for name in names:
-            self.__send_over_group(name)
+        try:
+            self.ui.lblStatus.setText("Sending!")
+            self.ui.btnSend.setEnabled(False);
+            names = self.__get_selected_groups()
+            if len(names) == 0:
+                self._display_error("Select Groups to send!")
+                self.ui.btnSend.setEnabled(True);
+                return False
+            for name in names:
+                self.__send_over_group(name)
+
+        finally:
+            self.ui.btnSend.setEnabled(True);
+
+    def _display_error(self, msg):
+      self.logger.debug(msg)
+      QMessageBox(QMessageBox.Warning, "Error!", msg).exec()
