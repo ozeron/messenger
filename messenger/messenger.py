@@ -1,4 +1,8 @@
+
 import time, vk
+import requests
+from controllers.get_captcha import GetCapthca
+
 from messenger import logger
 
 
@@ -29,12 +33,50 @@ class VkMessenger:
     def comment_every_post(self, public_id, message, interval=15, photo=None):
         posts_list = self.api.wall.get(owner_id=-public_id, extended=1)
         time.sleep(1)
+
         for i in reversed(range(1, len(posts_list['items']) + 1)):
-            self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message, attachments=photo)
+            try:
+                self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message, attachments=photo)
+            except vk.api.VkAPIMethodError as e:
+                sid = e.get_capthca_sid()
+                result = self.get_capthca(e.get_capthca_sid(), e.get_capthca_url())
+                if(result == False):
+                    break
+                try:
+                    self.api.wall.addComment(owner_id=-public_id,
+                                             post_id=i,
+                                             text=message,
+                                             attachments=photo,
+                                             captcha_sid=sid,
+                                             captcha_key=result)
+                    continue
+                except vk.api.VkAPIMethodError as q:
+                    self.logger.debug('Error. Incorrect capthca!')
+                    continue
             time.sleep(interval)
 
     def comment_post(self, public_id, post_id, message):
-        self.api.wall.addComment(owner_id=-public_id, post_id=post_id, text=message)
+        try:
+            self.api.wall.addComment(owner_id=-public_id, post_id=post_id, text=message)
+        except vk.api.VkAPIMethodError as e:
+            sid = e.get_capthca_sid()
+            result = self.get_capthca(e.get_capthca_sid(), e.get_capthca_url())
+            if(result == False):
+                return
+            try:
+                self.api.wall.addComment(owner_id=-public_id,
+                                         post_id=post_id,
+                                         text=message,
+                                         captcha_sid=sid,
+                                         captcha_key=result)
+            except vk.api.VkAPIMethodError as q:
+                self.logger.debug('Error. Incorrect capthca!')
+
+
+    def get_capthca(self, sid, url):
+        dialog = GetCapthca(sid, url)
+        dialog.exec_()
+        return dialog.get_result()
 
     def get_pictures(self, album):
         return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
