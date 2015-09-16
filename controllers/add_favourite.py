@@ -38,4 +38,3 @@ class AddFavourite(QDialog):
 
   def __showText(self, msg):
       self.ui.lblStatus.setText(str(msg))
-

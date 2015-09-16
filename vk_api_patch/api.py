@@ -28,7 +28,7 @@ def json_iter_parse(response_text):
     idx = 0
     while idx <= len(response_text):
         obj, idx = decoder.raw_decode(response_text, idx)
-        yield obj   
+        yield obj
 
 
 class APISession(object):
@@ -51,7 +51,7 @@ class APISession(object):
 
         self.access_token = access_token
         self.scope = scope or ''
-        
+
         self.api_version = api_version
 
         self._default_timeout = timeout
@@ -86,8 +86,8 @@ class APISession(object):
             self.auth_code_is_needed(response.content, session)
         elif 'security_check' in response.url:
             self.phone_number_is_needed(response.content, session)
-        else:           
-            
+        else:
+
             raise VkAuthorizationError('Authorization error (bad password)')
 
         # OAuth2
@@ -154,7 +154,7 @@ class APISession(object):
 
                 # return make_handy(data['response'])
                 return data['response']
-            
+
         if INTERNAL_SERVER_ERROR in error_codes:  # invalid access token
             self.get_access_token()
             return self(method_name, **method_kwargs)
@@ -179,28 +179,28 @@ class APISession(object):
         Reload this in child
         """
         raise VkAPIMethodError(error_data)
-    
+
     def auth_code_is_needed(self, content, session):
         """
         Default behavior on 2-AUTH CODE is to raise exception
         Reload this in child
-        """           
+        """
         raise VkAuthorizationError('Authorization error (2-factor code is needed)')
-    
+
     def auth_captcha_is_needed(self, content, session):
         """
         Default behavior on CAPTCHA is to raise exception
         Reload this in child
-        """              
+        """
         raise VkAuthorizationError('Authorization error (captcha)')
-    
+
     def phone_number_is_needed(self, content, session):
         """
         Default behavior on PHONE NUMBER is to raise exception
         Reload this in child
-        """              
-        raise VkAuthorizationError('Authorization error (phone number is needed)')        
-    
+        """
+        raise VkAuthorizationError('Authorization error (phone number is needed)')
+
 
 class APIMethod(object):
     __slots__ = ['_api_session', '_method_name']

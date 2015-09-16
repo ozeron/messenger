@@ -5,13 +5,8 @@ from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from PyQt5.QtCore import QUrl, QSize
 from PyQt5.uic import loadUi
-import time
-
 from messenger import logger
-
-
-
-
+import time
 
 class GetCapthca(QDialog):
     def __init__(self, sid, url):

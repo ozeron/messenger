@@ -50,8 +50,6 @@ def remove_from_favourites(id,name=""):
     else:
         return False
 
-
-
 def set_groups(groups):
     config.set_key("groups", groups)
     return True
@@ -60,4 +58,3 @@ def add_favourite_group(id , name=""):
     list = get_groups()
     list.append(make_group(id, name))
     set_groups(list)
-

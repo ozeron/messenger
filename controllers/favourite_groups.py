@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QWidget, QDialog, QTableWidgetItem, QTableWidget, QMessageBox,QAbstractItemView
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QBrush, QColor
-
 from messenger import logger
 from messenger import groups_manager
 from controllers.add_favourite import AddFavourite
@@ -72,4 +71,3 @@ class FavouriteGroupsDialog(QWidget):
     while self.grid.rowCount() > 0:
         self.grid.removeRow(0)
     self.logger.debug("Table cleared")
-

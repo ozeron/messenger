@@ -1,5 +1,6 @@
 
 import time, vk
+from vk_api_patch import api
 import requests
 from controllers.get_captcha import GetCapthca
 
@@ -16,7 +17,7 @@ class VkMessenger:
         login = dict['login']
         passw = dict['pass']
         token = dict['token']
-	
+
         self.logger.debug("Creating vkapi instance")
         vkapi = vk.API(app_id, login, passw, token)
         self.logger.debug('Created vkapi instance setting token')
@@ -31,12 +32,13 @@ class VkMessenger:
         return friends
 
     def comment_every_post(self, public_id, message, interval=15, photo=None):
-        posts_list = self.api.wall.get(owner_id=-public_id, extended=1)
+        posts_list = self.api.wall.get(owner_id=-public_id, count=50)
         time.sleep(1)
-
-        for i in reversed(range(1, len(posts_list['items']) + 1)):
+        for i in posts_list['items']:
+            post_id = i['id']
             try:
-                self.api.wall.addComment(owner_id=-public_id, post_id=i, text=message, attachments=photo)
+                self.api.wall.addComment(owner_id=-public_id, post_id=post_id, text=message, attachments=photo)
+                self.logger.debug("Commented post id: %s" % post_id)
             except vk.api.VkAPIMethodError as e:
                 sid = e.get_capthca_sid()
                 result = self.get_capthca(e.get_capthca_sid(), e.get_capthca_url())
@@ -44,7 +46,7 @@ class VkMessenger:
                     break
                 try:
                     self.api.wall.addComment(owner_id=-public_id,
-                                             post_id=i,
+                                             post_id=post_id,
                                              text=message,
                                              attachments=photo,
                                              captcha_sid=sid,

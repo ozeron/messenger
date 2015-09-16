@@ -24,4 +24,3 @@ class VkClient:
 
     def get_group_name(self, g_id):
         return self.vk_messenger.get_group_name(g_id)
-
