@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QMessageBox,QAbstractItemView
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QMessageBox,QAbstractItemView, QHeaderView
 from PyQt5.QtCore import QDateTime, QVariant, QTimer, Qt
 from PyQt5.uic import loadUi
 from PyQt5.QtWidgets import QTableWidget
@@ -13,12 +13,14 @@ class SelectGroupsDialog(QWidget):
     self.vk_client = vk_client
     self.ui = loadUi('uis/select_groups.ui', self)
     self.grid = self.ui.vwvGroups
+    self.grid.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
     self.__init_timers()
     self.__init_lists()
     self.__init_connections()
     
   def __init_lists(self):
     self.ui.selectCountry.clear()
+    self.ui.selectCountry.addItem("[Any]", None)
     self.ui.selectCountry.addItem("Россия", QVariant(1))
     self.ui.selectCountry.addItem("Украина", QVariant(2))
     self.__on_new_country_selected(0)
@@ -56,10 +58,13 @@ class SelectGroupsDialog(QWidget):
     self.reloadTimer.start()
     
   def __on_groups_slider_move(self, current):
-    self.scrollTimer.start()
+    if current == self.grid.verticalScrollBar().maximum():
+      self.scrollTimer.start()
     
   def __on_new_country_selected(self, index):
+    self.ui.selectCity.setEnabled(index != 0)
     self.ui.selectCity.clear()
+    self.ui.selectCity.addItem("[Any]")
     self.__on_city_select_edittext_changed("")
     self.ui.selectCity.setCurrentIndex(0)
         
@@ -68,13 +73,18 @@ class SelectGroupsDialog(QWidget):
       return
 
     countryId = self.ui.selectCountry.itemData(self.ui.selectCountry.currentIndex())
+    if not countryId:
+        return
+        
     suggestedCity = self.vk_client.vk_messenger.get_top_n_cities_by_country_and_name_with_offset(countryId, string, 20)
     
     if (suggestedCity['count'] == 0):
       return
       
     temporal_block = self.ui.selectCity.blockSignals(True)
-    self.ui.selectCity.clear()      
+    self.ui.selectCity.clear()     
+    self.ui.selectCity.addItem("[Any]")
+ 
     for city in suggestedCity['items']:
       self.ui.selectCity.addItem(city['title'], QVariant(city['id']))
     self.ui.selectCity.setCurrentText(string)
@@ -119,6 +129,7 @@ class SelectGroupsDialog(QWidget):
     search_query = self.ui.editQuery.text()
     if not search_query:
       return
+      
     groups = self.vk_client.vk_messenger.get_top_n_groups_by_location(cId, count, search_query, self.ui.vwvGroups.rowCount())
 	  
     for group in groups:
@@ -126,7 +137,7 @@ class SelectGroupsDialog(QWidget):
       self.grid.setItem(self.grid.rowCount()-1, 0, QTableWidgetItem(group['name']))
       self.grid.setItem(self.grid.rowCount()-1, 1, QTableWidgetItem(str(group['id'])))
       if groups_manager.already_in_favourites(group['id'], group['name']):
-          self._highlite_row(grid.rowCount()-1, self._highlite_brush())
+          self._highlite_row(self.grid.rowCount()-1, self._highlite_brush())
     self.logger.debug('Succesfully searched!')
 	
   def __on_double_click_on_group(self, row):
@@ -163,8 +174,7 @@ class SelectGroupsDialog(QWidget):
           self.grid.item(row,i).setBackground(color)
 
   def _highlite_brush(self):
-      # RGB: #495B85
-      return QColor(73,91,133)
+      return QColor("lightgreen")
 
   def _white_brush(self):
       return QColor(255,255,255)
