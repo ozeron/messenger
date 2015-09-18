@@ -99,17 +99,13 @@ class VkMessenger:
         if status and "name" in group.keys():
             return group["name"]
         return ""
+        
+    def get_top_n_cities_by_country_and_name_with_offset(self, country, name = "", n = 20, off = 0):
+        cities = self.api.database.getCities(country_id = country, q = name, count = n, offset = off);
+        return cities;
 
-    def get_top_n_groups_by_location(self, city, n, search_text):
+    def get_top_n_groups_by_location(self, city_id, n, search_text, _offset = 0):
         count_groups = n
-        countries = self.api.database.getCountries(code="UA")
-        country = countries['items'][0]
-        cities = self.api.database.getCities(country_id=country['id'], q=city)
-        city = cities['items'][0]
-        groups = self.api.groups.search(q=search_text, city_id=city['id'])
+        groups = self.api.groups.search(q=search_text, city_id=city_id, offset = _offset)
         rgroups = []
-        if int(groups['count']) < count_groups:
-            count_groups = int(groups['count'])
-        for i in range(0, count_groups):
-            rgroups.append(groups['items'][i])
-        return rgroups
+        return groups['items'][:count_groups]
