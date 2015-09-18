@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog
+﻿from PyQt5.QtWidgets import QDialog
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QBrush, QColor
 
@@ -13,6 +13,7 @@ class AddFavourite(QDialog):
     self.vk_client = vk_client
     self.ui = loadUi('uis/add_favourite.ui', self)
     self.ui.buttonBox.accepted.connect(self.__on_add_btn_clicked)
+    
 
   def __on_add_btn_clicked(self):
     self.logger.debug("Add new group clicked!")

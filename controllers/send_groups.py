@@ -5,10 +5,8 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkReques
 from PyQt5 import QtCore
 from PyQt5.QtCore import QUrl, QSize
 from PyQt5.uic import loadUi
-
 from messenger import logger
 from messenger import groups_manager
-
 
 class SendGroupsDialog(QWidget):
     def __init__(self, client):
@@ -45,7 +43,6 @@ class SendGroupsDialog(QWidget):
         pixmap.loadFromData(reply.readAll(), "jpg")
         list_item.setIcon(QIcon(pixmap))
 
-
     def slotItemClicked(self):
         row = self.ui.tblPthotos.currentItem().row()
         currenttext = self.ui.editPhotoID.text()
@@ -53,28 +50,32 @@ class SendGroupsDialog(QWidget):
         if currenttext == "":
             self.ui.editPhotoID.setText(newtext)
         else:
-            self.ui.editPhotoID.setText(currenttext+','+newtext)
-
+            self.ui.editPhotoID.setText(currenttext + ',' + newtext)
 
     def __on_btnLoadPhotos_clicked(self):
-        pictures = self.vk_client.get_pictures(self.ui.editAlbumID.text())['items']
-
-        print(pictures)
-
-        for i, item in enumerate(pictures):
+        
+        photos = self.vk_client.get_photos(self.ui.editAlbumID.text())['items']
+        self.logger.debug("Trying to reach the specific album")
+        for i, item in enumerate(photos):
             url = QUrl(item['photo_604'])
             list_item = QListWidgetItem(item['text'])
             list_item.photo = item
             reply = self.__networkManager.get(QNetworkRequest(url))
             self.__items_dict[reply] = list_item
             self.ui.lstPhotos.addItem(list_item)
+        self.logger.debug("Load succeeded")
 
     def __on_btnLoadAllPublicPhotos_clicked(self):
-        self.logger.debug("Success");
-        albums = self.vk_client.get_albums()['items']
-        
-
-
+        self.logger.debug("Trying to reach all public albums")
+        photos = self.vk_client.get_allPhotos()['items']
+        for i, item in enumerate(photos):
+            url = QUrl(item['photo_604'])
+            list_item = QListWidgetItem(item['text'])
+            list_item.photo = item
+            reply = self.__networkManager.get(QNetworkRequest(url))
+            self.__items_dict[reply] = list_item
+            self.ui.lstPhotos.addItem(list_item)
+        self.logger.debug("Load succeeded")
 
     def __get_selected_groups(self):
         names = []
@@ -105,7 +106,6 @@ class SendGroupsDialog(QWidget):
         for list_item in self.ui.lstPhotos.selectedItems():
             photos.append('photo{0}_{1}'.format(list_item.photo['owner_id'], list_item.photo['id']))
 
-
         self.logger.debug('Sending messages to %s msg: %s, with time out: %s sec', group_id, message, time_out)
         self.vk_client.comment_every_post(group_id, message, time_out, ','.join(photos))
 
@@ -115,17 +115,17 @@ class SendGroupsDialog(QWidget):
     def __on_btn_send_clicked(self):
         try:
             self.ui.lblStatus.setText("Sending!")
-            self.ui.btnSend.setEnabled(False);
+            self.ui.btnSend.setEnabled(False)
             names = self.__get_selected_groups()
             if len(names) == 0:
                 self._display_error("Select Groups to send!")
-                self.ui.btnSend.setEnabled(True);
+                self.ui.btnSend.setEnabled(True)
                 return False
             for name in names:
                 self.__send_over_group(name)
 
         finally:
-            self.ui.btnSend.setEnabled(True);
+            self.ui.btnSend.setEnabled(True)
 
     def _display_error(self, msg):
       self.logger.debug(msg)

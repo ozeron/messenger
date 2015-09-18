@@ -19,11 +19,11 @@ class VkClient:
         self.vk_messenger.comment_every_post(id, message, time_out, photo)
 
 
-    def get_pictures(self, album):
-        return self.vk_messenger.get_pictures(album)
+    def get_photos(self, album):
+        return self.vk_messenger.get_photos(album)
     
-    def get_albums(self):
-        return self.vk_messenger.get_albums()
+    def get_allPhotos(self):
+        return self.vk_messenger.get_allPhotos()
 
     def get_group_name(self, g_id):
         return self.vk_messenger.get_group_name(g_id)

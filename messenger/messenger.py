@@ -1,5 +1,6 @@
 ﻿
-import time, vk
+import time
+import vk
 from vk_api_patch import api
 import requests
 from controllers.get_captcha import GetCapthca
@@ -80,12 +81,12 @@ class VkMessenger:
         dialog.exec_()
         return dialog.get_result()
 
-    def get_pictures(self, album):
+    def get_photos(self, album):
         return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
 
-    def get_albums(self):
-        return self.api.photos.getAlbums(owner_id=int(self.api.users.get()[0]['id']))
-
+    def get_allPhotos(self):
+        return self.api.photos.getAll()
+        
     def find_group_by_id(self,g_id):
         self.logger.debug("Trying to get groupById: %s" % g_id)
         return self.api.groups.getById(group_ids=[g_id])
