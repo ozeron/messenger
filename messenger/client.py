@@ -1,4 +1,4 @@
-from messenger.messenger import VkMessenger
+﻿from messenger.messenger import VkMessenger
 from messenger import logger
 
 APP_ID = '4841859'
@@ -21,6 +21,9 @@ class VkClient:
 
     def get_pictures(self, album):
         return self.vk_messenger.get_pictures(album)
+    
+    def get_albums(self):
+        return self.vk_messenger.get_albums()
 
     def get_group_name(self, g_id):
         return self.vk_messenger.get_group_name(g_id)

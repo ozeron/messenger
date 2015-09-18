@@ -1,4 +1,4 @@
-
+﻿
 import time, vk
 from vk_api_patch import api
 import requests
@@ -82,6 +82,9 @@ class VkMessenger:
 
     def get_pictures(self, album):
         return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
+
+    def get_albums(self):
+        return self.api.photos.getAlbums(owner_id=int(self.api.users.get()[0]['id']))
 
     def find_group_by_id(self,g_id):
         self.logger.debug("Trying to get groupById: %s" % g_id)

@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Send messages in groups</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0">
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0,0,0,0,0,0,0">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="minimumSize">
@@ -42,13 +42,6 @@
       </item>
       <item row="4" column="1">
        <widget class="QLineEdit" name="editAlbumID"/>
-      </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="btnLoadPhotos">
-        <property name="text">
-         <string>Load Photos</string>
-        </property>
-       </widget>
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="lblPhoto">
@@ -89,6 +82,20 @@
        <widget class="QListView" name="list"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnLoadAllPublicPhotos">
+     <property name="text">
+      <string>Load All Public Photos</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="btnLoadPhotos">
+     <property name="text">
+      <string>Load Photos</string>
+     </property>
     </widget>
    </item>
    <item>

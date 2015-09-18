@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCompleter, QListView, QListWidgetItem,QMessageBox
+﻿from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCompleter, QListView, QListWidgetItem,QMessageBox
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
@@ -18,6 +18,7 @@ class SendGroupsDialog(QWidget):
         self.ui = loadUi('uis/send_groups.ui', self)
         self.ui.btnSend.clicked.connect(self.__on_btn_send_clicked)
         self.ui.btnLoadPhotos.clicked.connect(self.__on_btnLoadPhotos_clicked)
+        self.ui.btnLoadAllPublicPhotos.clicked.connect(self.__on_btnLoadAllPublicPhotos_clicked)
         self.ui.lstPhotos.setViewMode(QListView.IconMode)
         self.ui.lstPhotos.setGridSize(QSize(200, 200))
         self.ui.lstPhotos.setIconSize(QSize(150, 150))
@@ -67,6 +68,13 @@ class SendGroupsDialog(QWidget):
             reply = self.__networkManager.get(QNetworkRequest(url))
             self.__items_dict[reply] = list_item
             self.ui.lstPhotos.addItem(list_item)
+
+    def __on_btnLoadAllPublicPhotos_clicked(self):
+        self.logger.debug("Success");
+        albums = self.vk_client.get_albums()['items']
+        
+
+
 
     def __get_selected_groups(self):
         names = []
