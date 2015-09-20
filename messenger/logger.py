@@ -1,4 +1,4 @@
-import logging
+﻿import logging
 from messenger import config
 
 FORMAT = '%(asctime)-15s::%(name)s::%(levelname)-6s %(message)s'
