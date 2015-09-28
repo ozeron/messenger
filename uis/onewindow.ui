@@ -56,7 +56,7 @@
 }</string>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <property name="tabBarAutoHide">
        <bool>false</bool>
@@ -351,36 +351,6 @@
                 <string/>
                </property>
                <layout class="QGridLayout" name="gridLayout">
-                <item row="4" column="1">
-                 <widget class="QLineEdit" name="editAlbumID"/>
-                </item>
-                <item row="4" column="0">
-                 <widget class="QLabel" name="lblAlbum">
-                  <property name="text">
-                   <string>Album ID</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="5" column="1">
-                 <widget class="QPushButton" name="btnLoadPhotos">
-                  <property name="text">
-                   <string>Load Photos</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="0">
-                 <widget class="QLabel" name="lblPhoto">
-                  <property name="text">
-                   <string>Photo:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="3" column="1">
-                 <widget class="QListWidget" name="lstPhotos"/>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QSpinBox" name="msTimeoutEdit"/>
-                </item>
                 <item row="0" column="0" colspan="2">
                  <widget class="QPlainTextEdit" name="msMessageEdit">
                   <property name="placeholderText">
@@ -395,14 +365,49 @@
                   </property>
                  </widget>
                 </item>
-                <item row="6" column="1">
-                 <widget class="QPushButton" name="btnSend">
+                <item row="1" column="1">
+                 <widget class="QSpinBox" name="msTimeoutEdit"/>
+                </item>
+                <item row="2" column="0" colspan="2">
+                 <layout class="QHBoxLayout" name="horizontalLayout_4">
+                  <item>
+                   <widget class="QLabel" name="photo1">
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="photo2">
+                    <property name="text">
+                     <string/>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item row="3" column="0">
+                 <widget class="QPushButton" name="btnChangePhoto1">
                   <property name="text">
-                   <string>StartSending</string>
+                   <string>Change photo 1</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="3" column="1">
+                 <widget class="QPushButton" name="btnChangePhoto2">
+                  <property name="text">
+                   <string>Change Photo 2</string>
                   </property>
                  </widget>
                 </item>
                </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="btnSend">
+               <property name="text">
+                <string>StartSending</string>
+               </property>
               </widget>
              </item>
             </layout>
