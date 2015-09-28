@@ -5,8 +5,9 @@ import json
 from PyQt5.QtWidgets import *
 
 from messenger.client import VkClient
-from messenger import logger
+from messenger import logger, config
 from controllers.main_dialog import MainDialog
+import sys
 
 
 
@@ -18,7 +19,7 @@ logger = logger.get(__name__)
 def start():
     if len(sys.argv) > 1:
       path = sys.argv[1]
-    text = open(CREDENTIALS_PATH, 'r').read()
+    text = open(config.CREDENTIALS_PATH, 'r').read()
     client = get_client(json.loads(text))
     start_app_with(client)
 
@@ -32,10 +33,9 @@ def start_app_with(client):
     a = QApplication([])
     main_dialog = MainDialog(client)
     logger.debug("Created MainDialog")
+ #   sys.excepthook = main_dialog.guiExceptionHook
     main_dialog.show()
     a.exec()
-
-CREDENTIALS_PATH = os.path.join(os.path.dirname(__file__), 'config/credentials.json')
 
 if __name__ == '__main__':
   start()

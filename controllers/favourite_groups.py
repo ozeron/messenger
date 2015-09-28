@@ -1,19 +1,20 @@
 from PyQt5.QtWidgets import QWidget, QDialog, QTableWidgetItem, QTableWidget, QMessageBox,QAbstractItemView
+from PyQt5.QtCore import QObject
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QBrush, QColor
 from messenger import logger
 from messenger import groups_manager
 from controllers.add_favourite import AddFavourite
 
-class FavouriteGroupsDialog(QWidget):
-  def __init__(self, vk_client):
-    QWidget.__init__(self)
+class FavouriteGroupsDialog(QObject):
+  def __init__(self, vk_client, ui):
+    QObject.__init__(self)
     self.logger = logger.get(__name__)
     self.vk_client = vk_client
-    self.ui = loadUi('uis/favourites_groups.ui', self)
+    self.ui = ui
     self.ui.btnAddFavourites.clicked.connect(self.__on_add_btn_clicked)
     self.ui.btnDelete.clicked.connect(self.__on_delete_btn_clicked)
-    self.grid = self.ui.vwvGroups
+    self.grid = self.ui.fGroupsList
     self.grid.setEditTriggers( QTableWidget.NoEditTriggers )
     self.show_favourites()
 
@@ -38,7 +39,7 @@ class FavouriteGroupsDialog(QWidget):
         self.logger.debug("Dialog cancel!")
 
   def __on_delete_btn_clicked(self):
-      rows = self.ui.grid.selectionModel().selectedRows()
+      rows = self.grid.selectionModel().selectedRows()
       if len(rows) > 0:
           self._delete_rows(rows)
       else:

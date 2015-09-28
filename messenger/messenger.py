@@ -53,7 +53,7 @@ class VkMessenger:
                                              captcha_key=result)
                     continue
                 except vk.api.VkAPIMethodError as q:
-                    self.logger.debug('Error. Incorrect capthca!')
+                    self.logger.debug('Error. Incorrect captcha!')
                     continue
             time.sleep(interval)
 
