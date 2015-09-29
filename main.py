@@ -7,14 +7,15 @@ from PyQt5.QtWidgets import *
 from messenger.client import VkClient
 from messenger import logger, config
 from controllers.main_dialog import MainDialog
-import sys
 
 
 
-# TODO: add quequ adding
-# Token reqeust https://oauth.vk.com/authorize?client_id=4841859&scope=266240&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.33&response_type=token
+# Token request
+# https://oauth.vk.com/authorize?client_id=4841859&scope=275509&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.33&response_type=token
 
 logger = logger.get(__name__)
+PATH = os.path.dirname(__file__)
+
 
 def start():
     if len(sys.argv) > 1:

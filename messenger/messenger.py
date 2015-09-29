@@ -80,9 +80,6 @@ class VkMessenger:
         dialog.exec_()
         return dialog.get_result()
 
-    def get_pictures(self, album):
-        return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
-
     def find_group_by_id(self,g_id):
         self.logger.debug("Trying to get groupById: %s" % g_id)
         return self.api.groups.getById(group_ids=[g_id])
@@ -99,7 +96,7 @@ class VkMessenger:
         if status and "name" in group.keys():
             return group["name"]
         return ""
-        
+
     def get_top_n_cities_by_country_and_name_with_offset(self, country, name = "", n = 20, off = 0):
         cities = self.api.database.getCities(country_id = country, q = name, count = n, offset = off);
         return cities;
@@ -109,3 +106,23 @@ class VkMessenger:
         groups = self.api.groups.search(q=search_text, city_id=city_id, offset = _offset)
         rgroups = []
         return groups['items'][:count_groups]
+
+    def get_albumData(self):
+        return self.api.photos.getAlbums(need_covers = 1,need_system=1)
+
+    def get_photo(self,album,photo):
+        if isinstance(album,str):
+            all_photos = self.api.photos.get(album_id=album)['items']
+            for item in all_photos:
+                if item['id'] == photo:
+                   return item
+        return self.api.photos.get(album_id=album,photo_ids=photo)['items'][0]
+
+    def get_photos(self, album):
+        return self.api.photos.get(owner_id=int(self.api.users.get()[0]['id']), album_id=album)
+
+    def get_allPhotos(self):
+        return self.api.photos.getAll()
+
+    def get_userId(self):
+        return self.api.users.get()[0]['id']
