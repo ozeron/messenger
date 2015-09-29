@@ -15,6 +15,7 @@ class VkClient:
         self.logger.debug("Creating VkMessenger obj with config: " + str(config))
         self.vk_messenger = VkMessenger(config)
         self.logger.debug("VkMessenger Succesfully created!")
+
     def comment_every_post(self, id, message, time_out=None, photo=None):
         self.vk_messenger.comment_every_post(id, message, time_out, photo)
 
