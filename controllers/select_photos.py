@@ -107,7 +107,8 @@ class SelectPhotosDialog(QWidget):
         for item in self.photos:
             if(reply in self.photos[item]['sorted']):
                 self.photos[item]['sorted'][reply]['pixmap'] = pixmap
-                self.photos[item]['sorted'][reply]['listItem'].setIcon(QIcon(self.photos[item]['sorted'][reply]['pixmap'].scaled(self.icon_size)))
+                if item==self.selected_album:
+                    self.photos[item]['sorted'][reply]['listItem'].setIcon(QIcon(self.photos[item]['sorted'][reply]['pixmap'].scaled(self.icon_size)))
                 return
     
     def __return_photo(self,item):
